@@ -1,0 +1,46 @@
+
+/**
+ * Created by Ludwig on 2015-04-14.
+ */
+public class StartaMatning extends Activity{
+
+   GPSTracker gps;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_matning);
+        Intent i = new Intent(this, GPSTracker.class);
+        startService(i);
+
+    }
+    public void buttonMatning(View view){
+
+
+
+        TextView editText = (TextView) findViewById(R.id.matText);
+       gps = new GPSTracker(StartaMatning.this);
+        Button p1_button = (Button)findViewById(R.id.startaMatning);
+
+        if(p1_button.getText().equals("Avsluta Mätning")) {
+            p1_button.setText("Starta Mätning");
+            editText.setText("Ingen mätning sker.");
+
+        }
+        else{
+            p1_button.setText("Avsluta Mätning");
+            if(gps.isGPSEnabled) {
+              double latitude = gps.getLatitude();
+                double longitude = gps.getLongitude();
+                editText.setText("Mätning sker i latitud: " + latitude + ", och longitud: " + longitude);
+            }else{
+                gps.showSettingsAlert();
+            }
+       }
+
+
+
+    }
+
+
+}
